@@ -10,6 +10,12 @@ public class Dealership {
 
     private ArrayList<Vehicle> inventory = new ArrayList<>();
 
+    public Dealership() {
+        this.name = "";
+        this.address = "";
+        this.phone = "";
+    }
+
     public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
@@ -52,4 +58,12 @@ public class Dealership {
 
     }
 
+    @Override
+    public String toString() {
+        return "Dealership{" +
+                "phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
