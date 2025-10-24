@@ -1,6 +1,8 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static com.pluralsight.DealershipFileManager.getDealership;
@@ -92,7 +94,27 @@ public class UserInterface {
 
     public void processGetByMileageRequest() {}
 
-    public void processGetByVehicleTypeRequest() {}
+    public void processGetByVehicleTypeRequest() {
+        System.out.println("Enter type of the vehicle");
+        String type = scanner.nextLine().trim().toLowerCase();
+
+        List<Vehicle> vehicles = dealership.getAllVehicles();
+
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getVehicleType().toLowerCase().equals(type)) {
+                filteredByType.add(v);
+            }
+        }
+
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle type of  " + type + " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found with type " + type + ".");
+        }
+
+    }
 
     public void processGetAllVehiclesRequest() {
         List<Vehicle> vehicles = dealership.getAllVehicles();
