@@ -1,14 +1,14 @@
 package com.pluralsight;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 import static com.pluralsight.DealershipFileManager.getDealership;
+import static com.pluralsight.DealershipFileManager.saveDealership;
 
 public class UserInterface {
     private Dealership dealership;
+    private static final Scanner scanner = new Scanner(System.in);
 
     private void init () {
         this.dealership = getDealership();
@@ -32,11 +32,10 @@ public class UserInterface {
 
     public void display() {
         init();
-        Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
-            displayMenu();
+            displayMainMenu();
             System.out.print("Enter your choice: ");
             while (!scanner.hasNextInt()) { // while input is not a number
                 System.out.print("Invalid input. Enter a number: ");
@@ -100,11 +99,47 @@ public class UserInterface {
         displayVehicles(vehicles);
     }
 
-    public void processAddVehicleRequest() {}
+    public void processAddVehicleRequest() {
+        System.out.print("Enter VIN: ");
+        int vin = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        System.out.print("Enter year: ");
+        int year = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter make: ");
+        String make = scanner.nextLine();
+
+        System.out.print("Enter model: ");
+        String model = scanner.nextLine();
+
+        System.out.print("Enter vehicle type (e.g., SUV, Truck, Sedan): ");
+        String vehicleType = scanner.nextLine();
+
+        System.out.print("Enter color: ");
+        String color = scanner.nextLine();
+
+        System.out.print("Enter odometer reading: ");
+        int odometer = scanner.nextInt();
+
+        System.out.print("Enter price: ");
+        double price = scanner.nextDouble();
+
+        // Create the Vehicle object
+        Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+
+        // Add to dealership
+        dealership.addVehicle(vehicle);
+
+        System.out.println("\n✅ Vehicle added successfully!");
+
+        saveDealership(dealership);
+    }
 
     public void processRemoveVehicleRequest() {}
 
-    private void displayMenu() {
+    private void displayMainMenu() {
         System.out.println("\n==============================");
         System.out.println("     DEALERSHIP MAIN MENU     ");
         System.out.println("==============================");
@@ -120,4 +155,5 @@ public class UserInterface {
         System.out.println("[0] Exit");
         System.out.println("==============================");
     }
+
 }

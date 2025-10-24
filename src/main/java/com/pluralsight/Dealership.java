@@ -53,11 +53,29 @@ public class Dealership {
     }
 
     public void addVehicle (Vehicle vehicle) {
-
+        inventory.add(vehicle);
     }
 
     public void removeVehicle (Vehicle vehicle) {
+        inventory.remove(vehicle);
+    }
 
+    public String toCsv () {
+        return String.format("%s|%s|%s", name, address, phone);
+    }
+
+    public String getInventoryInCsv () {
+        StringBuilder inventoryInCsv = new StringBuilder();
+        for (Vehicle vehicle: inventory) {
+            String vehicleData = String.format("\n%d|%d|%s|%s|%s|%s|%d|%f",
+                    vehicle.getVin(), vehicle.getYear(),
+                    vehicle.getMake(), vehicle.getModel(),
+                    vehicle.getVehicleType(), vehicle.getColor(),
+                    vehicle.getOdometer(), vehicle.getPrice());
+            inventoryInCsv.append(vehicleData);
+        }
+
+        return inventoryInCsv.toString();
     }
 
     @Override
