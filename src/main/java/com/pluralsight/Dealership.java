@@ -14,12 +14,14 @@ public class Dealership {
         this.name = "";
         this.address = "";
         this.phone = "";
+        this.inventory = new ArrayList<>();
     }
 
-    public Dealership(String name, String address, String phone) {
+    public Dealership(String name, String address, String phone, ArrayList<Vehicle> inventory) {
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.inventory = inventory;
     }
 
 //    public List<Vehicle> getVehiclesByPrice (double min, double max) {
@@ -46,9 +48,9 @@ public class Dealership {
 //
 //    }
 //
-//    public List<Vehicle> getAllVehicles () {
-//
-//    }
+    public List<Vehicle> getAllVehicles () {
+        return inventory;
+    }
 
     public void addVehicle (Vehicle vehicle) {
 
