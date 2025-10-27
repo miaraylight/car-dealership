@@ -84,15 +84,128 @@ public class UserInterface {
         } while (choice != 0);
     }
 
-    public void processGetByPriceRequest() {}
+    public void processGetByPriceRequest() {
+        System.out.println("Enter min price: ");
+        double minPrice = scanner.nextDouble();
+        scanner.nextLine();
 
-    public void processGetByMakeModelRequest() {}
+        System.out.println("Enter max price: ");
+        double maxPrice = scanner.nextDouble();
+        scanner.nextLine();
 
-    public void processGetByYearRequest() {}
+        List<Vehicle> vehicles = dealership.getAllVehicles();
 
-    public void processGetByColorRequest() {}
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getPrice() >= minPrice && v.getPrice() <= maxPrice) {
+                filteredByType.add(v);
+            }
+        }
 
-    public void processGetByMileageRequest() {}
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle in range" + minPrice + "-" + maxPrice + " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found in range" + + minPrice + "-" + maxPrice + ".");
+        }
+    }
+
+    public void processGetByMakeModelRequest() {
+        System.out.println("Enter make");
+        String make = scanner.nextLine().trim().toLowerCase();
+
+        System.out.println("Enter model");
+        String model = scanner.nextLine().trim().toLowerCase();
+
+        List<Vehicle> vehicles = dealership.getAllVehicles();
+
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getMake().toLowerCase().equals(make) && v.getModel().toLowerCase().equals(model)) {
+                filteredByType.add(v);
+            }
+        }
+
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle by make&model" + make + " " + model + " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found with make&model " + make + " " + model + ".");
+        }
+    }
+
+    public void processGetByYearRequest() {
+        System.out.println("Enter min year of the vehicle");
+        int minYear = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter max year of the vehicle");
+        int maxYear = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Vehicle> vehicles = dealership.getAllVehicles();
+
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getYear() >= minYear && v.getYear() <= maxYear) {
+                filteredByType.add(v);
+            }
+        }
+
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle in range " + minYear + "-" + maxYear +  " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found in range " + minYear + "-" + maxYear +  ".");
+        }
+    }
+
+    public void processGetByColorRequest() {
+        System.out.println("Enter color of the vehicle");
+        String color = scanner.nextLine().trim().toLowerCase();
+
+        List<Vehicle> vehicles = dealership.getAllVehicles();
+
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getColor().toLowerCase().equals(color)) {
+                filteredByType.add(v);
+            }
+        }
+
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle color of  " + color + " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found with color " + color + ".");
+        }
+    }
+
+    public void processGetByMileageRequest() {
+        System.out.println("Enter min odometer: ");
+        int minMiles = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter max odometer: ");
+        int maxMiles = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Vehicle> vehicles = dealership.getAllVehicles();
+
+        ArrayList<Vehicle> filteredByType = new ArrayList<>();
+        for (Vehicle v : vehicles) {
+            if (v.getOdometer() >= minMiles && v.getOdometer() <= maxMiles) {
+                filteredByType.add(v);
+            }
+        }
+
+        if (!filteredByType.isEmpty()) {
+            displayVehicles(filteredByType);
+            System.out.println(filteredByType.size() + " vehicle in range" + minMiles + "-" + maxMiles + " found: ");
+        } else {
+            System.out.println("\n⚠️ No vehicle found in range" + + minMiles + "-" + maxMiles + ".");
+        }
+    }
 
     public void processGetByVehicleTypeRequest() {
         System.out.println("Enter type of the vehicle");
