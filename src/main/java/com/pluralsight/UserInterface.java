@@ -74,6 +74,12 @@ public class UserInterface {
                 case 9:
                     processRemoveVehicleRequest();
                     break;
+                case 10:
+                    processSellVehicleRequest();
+                    break;
+                case 11:
+                    processLeaseVehicleRequest();
+                    break;
                 case 0:
                     System.out.println("Exiting... Goodbye!");
                     break;
@@ -93,18 +99,11 @@ public class UserInterface {
         double maxPrice = scanner.nextDouble();
         scanner.nextLine();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
+        List<Vehicle> filteredByPrice =dealership.getVehiclesByPrice(minPrice, maxPrice);
 
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getPrice() >= minPrice && v.getPrice() <= maxPrice) {
-                filteredByType.add(v);
-            }
-        }
-
-        if (!filteredByType.isEmpty()) {
-            displayVehicles(filteredByType);
-            System.out.println(filteredByType.size() + " vehicle in range" + minPrice + "-" + maxPrice + " found: ");
+        if (!filteredByPrice.isEmpty()) {
+            displayVehicles(filteredByPrice);
+            System.out.println(filteredByPrice.size() + " vehicle in range " + minPrice + "-" + maxPrice + " found: ");
         } else {
             System.out.println("\n⚠️ No vehicle found in range" + + minPrice + "-" + maxPrice + ".");
         }
@@ -117,18 +116,11 @@ public class UserInterface {
         System.out.println("Enter model");
         String model = scanner.nextLine().trim().toLowerCase();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
-
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getMake().toLowerCase().equals(make) && v.getModel().toLowerCase().equals(model)) {
-                filteredByType.add(v);
-            }
-        }
+        List<Vehicle> filteredByType = dealership.getVehiclesByMakeModel(make, model);
 
         if (!filteredByType.isEmpty()) {
             displayVehicles(filteredByType);
-            System.out.println(filteredByType.size() + " vehicle by make&model" + make + " " + model + " found: ");
+            System.out.println(filteredByType.size() + " vehicle by make&model "  + make + " " + model + " found: ");
         } else {
             System.out.println("\n⚠️ No vehicle found with make&model " + make + " " + model + ".");
         }
@@ -143,18 +135,12 @@ public class UserInterface {
         int maxYear = scanner.nextInt();
         scanner.nextLine();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
 
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getYear() >= minYear && v.getYear() <= maxYear) {
-                filteredByType.add(v);
-            }
-        }
+        List<Vehicle> filteredByYear = dealership.getVehiclesByYear(minYear, maxYear);
 
-        if (!filteredByType.isEmpty()) {
-            displayVehicles(filteredByType);
-            System.out.println(filteredByType.size() + " vehicle in range " + minYear + "-" + maxYear +  " found: ");
+        if (!filteredByYear.isEmpty()) {
+            displayVehicles(filteredByYear);
+            System.out.println(filteredByYear.size() + " vehicle in range " + minYear + "-" + maxYear +  " found: ");
         } else {
             System.out.println("\n⚠️ No vehicle found in range " + minYear + "-" + maxYear +  ".");
         }
@@ -164,18 +150,11 @@ public class UserInterface {
         System.out.println("Enter color of the vehicle");
         String color = scanner.nextLine().trim().toLowerCase();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
+        List<Vehicle> filteredByColor = dealership.getVehiclesByColor(color);
 
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getColor().toLowerCase().equals(color)) {
-                filteredByType.add(v);
-            }
-        }
-
-        if (!filteredByType.isEmpty()) {
-            displayVehicles(filteredByType);
-            System.out.println(filteredByType.size() + " vehicle color of  " + color + " found: ");
+        if (!filteredByColor.isEmpty()) {
+            displayVehicles(filteredByColor);
+            System.out.println(filteredByColor.size() + " vehicle color of  " + color + " found: ");
         } else {
             System.out.println("\n⚠️ No vehicle found with color " + color + ".");
         }
@@ -190,18 +169,11 @@ public class UserInterface {
         int maxMiles = scanner.nextInt();
         scanner.nextLine();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
+        List<Vehicle> filteredByMileage = dealership.getVehiclesByMileage(minMiles, maxMiles);
 
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getOdometer() >= minMiles && v.getOdometer() <= maxMiles) {
-                filteredByType.add(v);
-            }
-        }
-
-        if (!filteredByType.isEmpty()) {
-            displayVehicles(filteredByType);
-            System.out.println(filteredByType.size() + " vehicle in range" + minMiles + "-" + maxMiles + " found: ");
+        if (!filteredByMileage.isEmpty()) {
+            displayVehicles(filteredByMileage);
+            System.out.println(filteredByMileage.size() + " vehicle in range " + minMiles + "-" + maxMiles + " found: ");
         } else {
             System.out.println("\n⚠️ No vehicle found in range" + + minMiles + "-" + maxMiles + ".");
         }
@@ -211,14 +183,7 @@ public class UserInterface {
         System.out.println("Enter type of the vehicle");
         String type = scanner.nextLine().trim().toLowerCase();
 
-        List<Vehicle> vehicles = dealership.getAllVehicles();
-
-        ArrayList<Vehicle> filteredByType = new ArrayList<>();
-        for (Vehicle v : vehicles) {
-            if (v.getVehicleType().toLowerCase().equals(type)) {
-                filteredByType.add(v);
-            }
-        }
+        List<Vehicle> filteredByType = dealership.getVehiclesByType(type);
 
         if (!filteredByType.isEmpty()) {
             displayVehicles(filteredByType);
@@ -295,6 +260,55 @@ public class UserInterface {
         }
     }
 
+    public void processSellVehicleRequest(){
+        System.out.println("\n--- Sell Vehicle ---");
+
+        System.out.print("Enter sale date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Enter customer email: ");
+        String customerEmail = scanner.nextLine();
+
+        System.out.print("Enter VIN of vehicle being sold: ");
+        int vin = scanner.nextInt();
+        scanner.nextLine();
+
+        Vehicle vehicleSold = dealership.findVehicleByVin(vin);
+        if (vehicleSold == null) {
+            System.out.println("❌ Vehicle not found. Sale cancelled.");
+            return;
+        }
+
+        System.out.print("Is the customer financing the purchase? (yes/no): ");
+        String financeInput = scanner.nextLine().trim().toLowerCase();
+        boolean isFinance = financeInput.equals("yes") || financeInput.equals("y");
+
+        // Confirm sale details
+        System.out.println("\n--- Confirm Sale ---");
+        System.out.println("Date: " + date);
+        System.out.println("Customer: " + customerName + " (" + customerEmail + ")");
+        System.out.println("Vehicle: " + vehicleSold.getYear() + " " + vehicleSold.getMake() + " " + vehicleSold.getModel());
+        System.out.println("Financed: " + (isFinance ? "Yes" : "No"));
+
+        System.out.print("\nConfirm sale? (yes/no): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirm.equals("yes")) {
+            System.out.println("Sale cancelled.");
+            return;
+        }
+
+
+
+        System.out.println("\n✅ Vehicle sold successfully to " + customerName + "!");
+
+    };
+
+    public void processLeaseVehicleRequest() {};
+
     private void displayMainMenu() {
         System.out.println("\n==============================");
         System.out.println("     DEALERSHIP MAIN MENU     ");
@@ -308,6 +322,8 @@ public class UserInterface {
         System.out.println("[7] Search by vehicle type");
         System.out.println("[8] Add a vehicle");
         System.out.println("[9] Remove a vehicle");
+        System.out.println("[10] Sell a vehicle");
+        System.out.println("[11] Lease a vehicle");
         System.out.println("[0] Exit");
         System.out.println("==============================");
     }
