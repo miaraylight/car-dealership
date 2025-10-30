@@ -5,8 +5,6 @@ public abstract class Contract {
     private String customerName;
     private String customerEmail;
     private Vehicle vehicleSold;
-    private double totalPrice;
-    private double monthlyPayment;
 
     public Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.date = date;

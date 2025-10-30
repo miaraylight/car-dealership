@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 import static com.pluralsight.DealershipFileManager.getDealership;
 import static com.pluralsight.DealershipFileManager.saveDealership;
+import static com.pluralsight.ContractDataManager.saveContractData;
 
 public class UserInterface {
     private Dealership dealership;
+    private ContractData contractData;
     private static final Scanner scanner = new Scanner(System.in);
 
     private void init () {
@@ -286,7 +288,6 @@ public class UserInterface {
         String financeInput = scanner.nextLine().trim().toLowerCase();
         boolean isFinance = financeInput.equals("yes") || financeInput.equals("y");
 
-        // Confirm sale details
         System.out.println("\n--- Confirm Sale ---");
         System.out.println("Date: " + date);
         System.out.println("Customer: " + customerName + " (" + customerEmail + ")");
@@ -301,7 +302,12 @@ public class UserInterface {
             return;
         }
 
+        SalesContract salesContract = new SalesContract(date, customerName, customerEmail, vehicleSold, isFinance);
 
+        contractData.addContract(salesContract); // adds to list of contracts
+        saveContractData(contractData); // writes to csv file
+        dealership.removeVehicle(vehicleSold); // remove from inventory
+        saveDealership(dealership); // update csv file
 
         System.out.println("\n✅ Vehicle sold successfully to " + customerName + "!");
 
