@@ -31,7 +31,7 @@ public class SalesContract extends Contract{
     }
 
     public double getSalesTaxAmount() {
-        return getTotalPrice() * 0.05;// (5%)
+        return super.getVehicleSold().getPrice() * 0.05;// (5%)
     }
 
     public double getRecordingFee() {
@@ -51,8 +51,7 @@ public class SalesContract extends Contract{
     }
 
     public double getProcessingFee() {
-        Vehicle vehicleSold = super.getVehicleSold();
-        double priceOfVehicle = vehicleSold.getPrice();
+        double priceOfVehicle = super.getVehicleSold().getPrice();
         double processingFee = 295;
 
         if (priceOfVehicle > 10000) {
@@ -63,15 +62,40 @@ public class SalesContract extends Contract{
     }
 
     public double getTotalPrice() {
-        return 123;
+        return super.getVehicleSold().getPrice() + salesTaxAmount + recordingFee + processingFee;
     };
 
     public double getMonthlyPayment() {
+        if (!isFinance) return 0.0;
+        double price = super.getVehicleSold().getPrice();
+        double totalPrice = getTotalPrice();
+        double annualRate;
+        int month;
 
-        if (isFinance) {
+        if (price >= 10000) {
             // • All loans are at 4.25% for 48 months if the price is $10,000 or more
+            annualRate = 0.0425;
+            month = 48;
+        }else {
             // • Otherwise they are at 5.25% for 24 month
+            annualRate = 0.0525;
+            month = 24;
         }
-        return 0;
+
+        double monthlyRate = annualRate / 12;
+
+        return (monthlyRate * totalPrice) / (1 - Math.pow(1 + monthlyRate, -month));
     };
+
+    @Override
+    public String toString() {
+        return "SalesContract{" +
+                "salesTaxAmount=" + salesTaxAmount +
+                ", recordingFee=" + recordingFee +
+                ", processingFee=" + processingFee +
+                ", totalPrice=" + totalPrice +
+                ", isFinance=" + isFinance +
+                ", monthlyPayment=" + monthlyPayment +
+                '}';
+    }
 }

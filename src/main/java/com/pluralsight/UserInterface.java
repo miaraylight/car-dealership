@@ -1,12 +1,11 @@
 package com.pluralsight;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 import static com.pluralsight.DealershipFileManager.getDealership;
 import static com.pluralsight.DealershipFileManager.saveDealership;
+import static com.pluralsight.ContractDataManager.getContractData;
 import static com.pluralsight.ContractDataManager.saveContractData;
 
 public class UserInterface {
@@ -16,6 +15,7 @@ public class UserInterface {
 
     private void init () {
         this.dealership = getDealership();
+        this.contractData = getContractData();
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
@@ -313,7 +313,51 @@ public class UserInterface {
 
     };
 
-    public void processLeaseVehicleRequest() {};
+    public void processLeaseVehicleRequest() {
+        System.out.println("\n--- Lease Vehicle ---");
+
+        System.out.print("Enter lease date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Enter customer email: ");
+        String customerEmail = scanner.nextLine();
+
+        System.out.print("Enter VIN of vehicle being leased: ");
+        int vin = scanner.nextInt();
+        scanner.nextLine();
+
+        Vehicle vehicleLeased = dealership.findVehicleByVin(vin);
+        if (vehicleLeased == null) {
+            System.out.println("❌ Vehicle not found. Lease cancelled.");
+            return;
+        }
+
+        System.out.println("\n--- Confirm Lease ---");
+        System.out.println("Date: " + date);
+        System.out.println("Customer: " + customerName + " (" + customerEmail + ")");
+        System.out.println("Vehicle: " + vehicleLeased.getYear() + " " + vehicleLeased.getMake() + " " + vehicleLeased.getModel());
+        System.out.println("Leased for 36 month starting: " + date);
+
+        System.out.print("\nConfirm Lease? (yes/no): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirm.equals("yes")) {
+            System.out.println("Lease cancelled.");
+            return;
+        }
+
+        LeaseContract leaseContract = new LeaseContract(date, customerName, customerEmail, vehicleLeased);
+
+        contractData.addContract(leaseContract); // adds to list of contracts
+        saveContractData(contractData); // writes to csv file
+        dealership.removeVehicle(vehicleLeased); // remove from inventory
+        saveDealership(dealership); // update csv file
+
+        System.out.println("\n✅ Vehicle leased successfully to " + customerName + "!");
+    };
 
     private void displayMainMenu() {
         System.out.println("\n==============================");

@@ -56,7 +56,7 @@ public class ContractDataManager {
 
                 } else if (contractType.equalsIgnoreCase("LEASE")) {
                     double expectedEndingValue = Double.parseDouble(data[12]);
-                    int leaseFee = Integer.parseInt(data[13]);
+                    double leaseFee = Double.parseDouble(data[13]);
                     double totalPrice = Double.parseDouble(data[14]);
                     double monthlyPayment = Double.parseDouble(data[15]);
 

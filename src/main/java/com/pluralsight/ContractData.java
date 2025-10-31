@@ -40,7 +40,7 @@ public class ContractData {
                 contractsCsv.append(saleContract);
 
             } else if (contract instanceof LeaseContract) {
-                String leaseContract = String.format("\n%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%f|%f|%d|%f|%f",
+                String leaseContract = String.format("\n%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%f|%f|%f|%f|%f",
                         "LEASE", contract.getDate(),// CONTRACT_TYPE|DATE|
                         contract.getCustomerName(), contract.getCustomerEmail(),// CUSTOMER_NAME|CUSTOMER_EMAIL|
                         vehicleSold.getVin(), vehicleSold.getYear(), // VIN|YEAR|
