@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,49 @@ public class ContractData {
 
     public List<Contract> getAllContracts(){
         return contracts;
+    }
+
+    public List<Contract> getLeaseContracts() {
+        List<Contract> leaseContracts = new ArrayList<>();
+        for (Contract contract: contracts) {
+            if (contract instanceof LeaseContract) {
+                leaseContracts.add((LeaseContract) contract);
+            }
+        }
+
+        return leaseContracts;
+    }
+
+    public List<Contract> getSaleContracts() {
+        List<Contract> saleContracts = new ArrayList<>();
+        for (Contract contract: contracts) {
+            if (contract instanceof SalesContract) {
+                saleContracts.add((SalesContract) contract);
+            }
+        }
+
+        return saleContracts;
+    }
+
+    public List<Contract> getLastByNumber(int number) {
+        //sort by date
+        //get newest [number] amount of contracts and return it as an array
+        List<Contract> lastContracts = new ArrayList<>(contracts); // copy existing list
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        lastContracts.sort((c1, c2) -> {
+            LocalDate date1 = LocalDate.parse(c1.getDate(), formatter);
+            LocalDate date2 = LocalDate.parse(c2.getDate(), formatter);
+            return date2.compareTo(date1);
+        });
+
+        // If fewer contracts than requested, just return all
+        if (number >= lastContracts.size()) {
+            return lastContracts;
+        }
+
+        return lastContracts.subList(0, number);
     }
 
     public void addContract(Contract contract) {

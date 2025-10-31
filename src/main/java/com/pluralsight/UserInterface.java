@@ -71,15 +71,9 @@ public class UserInterface {
                     processGetByVehicleTypeRequest();
                     break;
                 case 8:
-                    processAddVehicleRequest();
-                    break;
-                case 9:
-                    processRemoveVehicleRequest();
-                    break;
-                case 10:
                     processSellVehicleRequest();
                     break;
-                case 11:
+                case 9:
                     processLeaseVehicleRequest();
                     break;
                 case 0:
@@ -201,67 +195,6 @@ public class UserInterface {
         displayVehicles(vehicles);
     }
 
-    public void processAddVehicleRequest() {
-        System.out.print("Enter VIN: ");
-        int vin = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        System.out.print("Enter year: ");
-        int year = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter make: ");
-        String make = scanner.nextLine();
-
-        System.out.print("Enter model: ");
-        String model = scanner.nextLine();
-
-        System.out.print("Enter vehicle type (e.g., SUV, Truck, Sedan): ");
-        String vehicleType = scanner.nextLine();
-
-        System.out.print("Enter color: ");
-        String color = scanner.nextLine();
-
-        System.out.print("Enter odometer reading: ");
-        int odometer = scanner.nextInt();
-
-        System.out.print("Enter price: ");
-        double price = scanner.nextDouble();
-
-        // Create the Vehicle object
-        Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
-
-        // Add to dealership
-        dealership.addVehicle(vehicle);
-
-        System.out.println("\n✅ Vehicle added successfully!");
-
-        saveDealership(dealership);
-    }
-
-    public void processRemoveVehicleRequest() {
-        System.out.println("Enter vin number of the vehicle");
-        int vin = scanner.nextInt();
-        scanner.nextLine();
-
-        List<Vehicle> vehicles = dealership.getAllVehicles();
-        Vehicle vehicleToRemove = null;
-        for (Vehicle v : vehicles) {
-            if (v.getVin() == vin) {
-                vehicleToRemove = v;
-                break;
-            }
-        }
-
-        if (vehicleToRemove != null) {
-            dealership.removeVehicle(vehicleToRemove);
-            System.out.println("\n✅ Vehicle with VIN " + vin + " was successfully removed.");
-            saveDealership(dealership);
-        } else {
-            System.out.println("\n⚠️ No vehicle found with VIN " + vin + ".");
-        }
-    }
-
     public void processSellVehicleRequest(){
         System.out.println("\n--- Sell Vehicle ---");
 
@@ -370,10 +303,8 @@ public class UserInterface {
         System.out.println("[5] Search by color");
         System.out.println("[6] Search by mileage range");
         System.out.println("[7] Search by vehicle type");
-        System.out.println("[8] Add a vehicle");
-        System.out.println("[9] Remove a vehicle");
-        System.out.println("[10] Sell a vehicle");
-        System.out.println("[11] Lease a vehicle");
+        System.out.println("[8] Sell a vehicle");
+        System.out.println("[9] Lease a vehicle");
         System.out.println("[0] Exit");
         System.out.println("==============================");
     }
